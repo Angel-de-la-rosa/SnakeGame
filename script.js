@@ -12,6 +12,11 @@ const wrapper = document.querySelector(".wrapper");
 const soundOptions = document.getElementById("sound-options");
 const restartBtn = document.getElementById("restart-btn");
 const exitBtn = document.getElementById("exit-btn");
+const btnUp = document.querySelector(".control.up");
+const btnDown = document.querySelector(".control.down");
+const btnLeft = document.querySelector(".control.left");
+const btnRight = document.querySelector(".control.right");
+const mobileControls = document.querySelector(".mobile-controls"); 
 
 // Variables del juego
 let gameOver = false;
@@ -143,6 +148,49 @@ volumeSlider.addEventListener("input", () => {
     audioFondo.volume = volume;
   }
 });
+// control botones en movil
+btnUp.addEventListener("click", () => {
+  if (velocityY !== 1) {
+    velocityX = 0;
+    velocityY = -1;
+  }
+});
+
+btnDown.addEventListener("click", () => {
+  if (velocityY !== -1) {
+    velocityX = 0;
+    velocityY = 1;
+  }
+});
+
+btnLeft.addEventListener("click", () => {
+  if (velocityX !== 1) {
+    velocityX = -1;
+    velocityY = 0;
+  }
+});
+
+btnRight.addEventListener("click", () => {
+  if (velocityX !== -1) {
+    velocityX = 1;
+    velocityY = 0;
+  }
+});
+
+// Botón para comenzar a jugar tras instrucciones
+startBtn.addEventListener('click', () => {
+  startScreen.style.display = 'none';         // Ocultar instrucciones
+  wrapper.style.display = 'flex';             // Mostrar tablero
+  soundOptions.classList.remove("hidden");    // Mostrar opciones de sonido
+  reproducirCancionAleatoria();
+  changFoodPosition();
+  setIntervalId = setInterval(initGame, selectedSpeed);
+
+  // Mostrar controles móviles
+  if (window.innerWidth <= 768) {
+    mobileControls.style.display = "block";
+  }
+});
 
 // Reproducir música de fondo aleatoria en loop
 function reproducirCancionAleatoria() {
@@ -181,7 +229,9 @@ function startGame(speed) {
   mainMenu.style.display = "none";   // Ocultar menú principal
   startScreen.style.display = "flex"; // Mostrar instrucciones
 }
-
+document.body.addEventListener('touchmove', function(e) {
+  e.preventDefault();
+}, { passive: false });
 // Botones modal game over
 restartBtn.onclick = () => location.reload();
 exitBtn.onclick = () => window.close();

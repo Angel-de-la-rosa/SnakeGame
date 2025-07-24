@@ -11,7 +11,8 @@
 <body>
   <!-- MENÚ -->
   <div class="main-menu">
-    <h1 class="logo">🐍 SNAKE</h1>
+    <img src="./assets/logo.png" alt="" style="width: 200px; height: 200px;">
+    <h1 class="logo">  SNAKE</h1>
     <p>Selecciona la dificultad</p>
     <button onclick="startGame(150)">Fácil</button>
     <button onclick="startGame(90)">Difícil</button>
@@ -51,7 +52,14 @@
       />
     </div>
   </div>
-
+  <div class="mobile-controls">
+    <button class="control up">⬆️</button>
+    <div class="middle-row">
+      <button class="control left">⬅️</button>
+      <button class="control right">➡️</button>
+    </div>
+    <button class="control down">⬇️</button>
+  </div>
   <!-- Modal de game over -->
   <div class="game-over-modal hidden">
     <div class="modal-content">

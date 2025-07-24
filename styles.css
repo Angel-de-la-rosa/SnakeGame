@@ -222,7 +222,40 @@ button {
   }
   .start-content button:hover {
     background-color: #4baed9;
+  }/* Controles móviles */
+.mobile-controls {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  text-align: center;
+}
+
+.mobile-controls .control {
+  width: 60px;
+  height: 60px;
+  margin: 10px;
+  font-size: 24px;
+  border-radius: 10px;
+  background-color: #222;
+  color: white;
+  border: none;
+}
+
+.mobile-controls .middle-row {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+}
+
+/* Mostrar solo en pantallas pequeñas */
+@media (max-width: 768px) {
+  .mobile-controls {
+    display: none;
   }
+}
 @media (max-width: 600px) {
     .wrapper {
       width: 90vmin;
