@@ -5,8 +5,8 @@ const highScoreElement = document.querySelector(".high-score");
 const gameOverModal = document.querySelector(".game-over-modal");
 const muteBtn = document.getElementById("mute-btn");
 const volumeSlider = document.getElementById("volume-slider");
-const startScreen = document.getElementById('start-screen');
-const startBtn = document.getElementById('start-btn');
+const startScreen = document.getElementById("start-screen");
+const startBtn = document.getElementById("start-btn");
 const mainMenu = document.querySelector(".main-menu");
 const wrapper = document.querySelector(".wrapper");
 const soundOptions = document.getElementById("sound-options");
@@ -16,7 +16,7 @@ const btnUp = document.querySelector(".control.up");
 const btnDown = document.querySelector(".control.down");
 const btnLeft = document.querySelector(".control.left");
 const btnRight = document.querySelector(".control.right");
-const mobileControls = document.querySelector(".mobile-controls"); 
+const mobileControls = document.querySelector(".mobile-controls");
 
 // Variables del juego
 let gameOver = false;
@@ -29,6 +29,7 @@ let score = 0;
 let selectedSpeed = 125;
 let isMuted = false;
 let audioFondo = null;
+let musicaIniciada = false;
 
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerHTML = `high score: ${highScore}`;
@@ -38,6 +39,7 @@ wrapper.style.display = "none";
 soundOptions.classList.add("hidden");
 gameOverModal.classList.add("hidden");
 startScreen.style.display = "none";
+mobileControls.classList.add("hidden");
 
 // Función para posicionar comida aleatoriamente
 const changFoodPosition = () => {
@@ -54,6 +56,8 @@ const handleGameOver = () => {
     audioFondo.pause();
     audioFondo.currentTime = 0;
   }
+
+  mobileControls.classList.add("hidden");
 };
 
 // Cambiar dirección con teclas
@@ -124,23 +128,6 @@ const initGame = () => {
   playBoard.innerHTML = htmlMarkup;
 };
 
-// Mute / Unmute sonido
-muteBtn.addEventListener("click", () => {
-  isMuted = !isMuted;
-
-  if (audioFondo) {
-    if (isMuted) {
-      audioFondo.pause();
-      muteBtn.textContent = "🔇";
-    } else {
-      audioFondo.play();
-      muteBtn.textContent = "🔊";
-    }
-  } else {
-    muteBtn.textContent = isMuted ? "🔇" : "🔊";
-  }
-});
-
 // Control de volumen
 volumeSlider.addEventListener("input", () => {
   const volume = parseFloat(volumeSlider.value);
@@ -148,7 +135,78 @@ volumeSlider.addEventListener("input", () => {
     audioFondo.volume = volume;
   }
 });
-// control botones en movil
+
+// Mute / Unmute sonido
+muteBtn.addEventListener("click", () => {
+  isMuted = !isMuted;
+
+  if (!audioFondo) {
+    reproducirCancionAleatoria();
+    return;
+  }
+
+  if (isMuted) {
+    audioFondo.pause();
+    muteBtn.textContent = "🔇";
+  } else {
+    audioFondo.play().catch(err => {
+      console.log("No se pudo reproducir audio:", err);
+    });
+    muteBtn.textContent = "🔊";
+  }
+});
+
+// Reproducir música de fondo aleatoria en loop (una sola vez)
+function reproducirCancionAleatoria() {
+  if (musicaIniciada) return;
+  musicaIniciada = true;
+
+  const canciones = [
+    './backgroundMusic/8BitFunny.mp3',
+    './backgroundMusic/8BitMenu.mp3',
+    './backgroundMusic/8BitRetro.mp3',
+  ];
+
+  const cancionIndex = Math.floor(Math.random() * canciones.length);
+  audioFondo = new Audio(canciones[cancionIndex]);
+  audioFondo.loop = false;
+  audioFondo.volume = parseFloat(volumeSlider.value);
+
+  audioFondo.addEventListener('ended', reproducirCancionAleatoria);
+
+  if (!isMuted) {
+    audioFondo.play();
+  }
+}
+
+// Botón para comenzar a jugar tras instrucciones
+startBtn.addEventListener('click', () => {
+  startScreen.style.display = 'none';
+  wrapper.style.display = 'flex';
+  soundOptions.classList.remove("hidden");
+
+  if (window.innerWidth <= 768) {
+    mobileControls.classList.remove("hidden");
+  }
+
+  reproducirCancionAleatoria();
+  changFoodPosition();
+  setIntervalId = setInterval(initGame, selectedSpeed);
+});
+
+// Función para iniciar el juego desde menú con dificultad
+function startGame(speed) {
+  selectedSpeed = speed;
+  mainMenu.style.display = "none";
+  startScreen.style.display = "flex";
+  mobileControls.classList.add("hidden");
+}
+
+// Botones modal game over
+restartBtn.onclick = () => location.reload();
+exitBtn.onclick = () => window.close();
+
+// Controles móviles
 btnUp.addEventListener("click", () => {
   if (velocityY !== 1) {
     velocityX = 0;
@@ -177,61 +235,7 @@ btnRight.addEventListener("click", () => {
   }
 });
 
-// Botón para comenzar a jugar tras instrucciones
-startBtn.addEventListener('click', () => {
-  startScreen.style.display = 'none';         // Ocultar instrucciones
-  wrapper.style.display = 'flex';             // Mostrar tablero
-  soundOptions.classList.remove("hidden");    // Mostrar opciones de sonido
-  reproducirCancionAleatoria();
-  changFoodPosition();
-  setIntervalId = setInterval(initGame, selectedSpeed);
-
-  // Mostrar controles móviles
-  if (window.innerWidth <= 768) {
-    mobileControls.style.display = "block";
-  }
-});
-
-// Reproducir música de fondo aleatoria en loop
-function reproducirCancionAleatoria() {
-  const canciones = [
-    './backgroundMusic/8BitFunny.mp3',
-    './backgroundMusic/8BitMenu.mp3',
-    './backgroundMusic/8BitRetro.mp3',
-  ];
-
-  const cancionIndex = Math.floor(Math.random() * canciones.length);
-  audioFondo = new Audio(canciones[cancionIndex]);
-
-  audioFondo.loop = false;
-  audioFondo.volume = parseFloat(volumeSlider.value);
-
-  audioFondo.addEventListener('ended', reproducirCancionAleatoria);
-
-  if (!isMuted) {
-    audioFondo.play();
-  }
-}
-
-// Botón para comenzar a jugar tras instrucciones
-startBtn.addEventListener('click', () => {
-  startScreen.style.display = 'none';         // Ocultar instrucciones
-  wrapper.style.display = 'flex';              // Mostrar tablero
-  soundOptions.classList.remove("hidden");    // Mostrar opciones de sonido
-  reproducirCancionAleatoria();
-  changFoodPosition();
-  setIntervalId = setInterval(initGame, selectedSpeed);
-});
-
-// Función para iniciar el juego desde menú con dificultad
-function startGame(speed) {
-  selectedSpeed = speed;
-  mainMenu.style.display = "none";   // Ocultar menú principal
-  startScreen.style.display = "flex"; // Mostrar instrucciones
-}
+// Prevenir scroll en móviles
 document.body.addEventListener('touchmove', function(e) {
   e.preventDefault();
 }, { passive: false });
-// Botones modal game over
-restartBtn.onclick = () => location.reload();
-exitBtn.onclick = () => window.close();
