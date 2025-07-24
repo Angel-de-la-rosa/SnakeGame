@@ -224,7 +224,7 @@ button {
     background-color: #4baed9;
   }
 /* Mostrar solo en pantallas pequeñas */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .mobile-controls {
     position: fixed;
     bottom: 20px;
