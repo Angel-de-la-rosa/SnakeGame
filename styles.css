@@ -224,7 +224,7 @@ button {
     background-color: #4baed9;
   }
 /* Mostrar solo en pantallas pequeñas */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .mobile-controls {
     position: fixed;
     bottom: 20px;
@@ -251,7 +251,7 @@ button {
     gap: 60px;
   }
 }
-@media (max-width: 600px) {
+/* @media (max-width: 768px) {
     .wrapper {
       width: 90vmin;
       height: 95vmin;
@@ -261,4 +261,4 @@ button {
       font-size: 1rem;
       padding: 10px 20px;
     }
-  }
+  } */
