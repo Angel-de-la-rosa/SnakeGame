@@ -186,7 +186,7 @@ startBtn.addEventListener('click', () => {
   soundOptions.classList.remove("hidden");
 
   if (window.innerWidth <= 768) {
-    mobileControls.classList.remove("hidden");
+    document.querySelector('.mobile-controls').classList.add('active');
   }
 
   reproducirCancionAleatoria();
