@@ -178,6 +178,51 @@ button {
   .hidden{
     display: none;
   }
+  .start-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  #start-screen {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(33, 40, 55, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    flex-direction: column;
+  }
+  .start-content {
+    background: #212837;
+    padding: 30px 50px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+  .start-content h2 {
+    margin-bottom: 15px;
+  }
+  .start-content button {
+    margin-top: 15px;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    background-color: #60cbff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .start-content button:hover {
+    background-color: #4baed9;
+  }
 @media (max-width: 600px) {
     .wrapper {
       width: 90vmin;

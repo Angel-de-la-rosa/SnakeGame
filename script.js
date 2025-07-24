@@ -1,13 +1,19 @@
+// Elementos DOM
 const playBoard = document.querySelector(".play-board");
 const scoreElement = document.querySelector(".score");
 const highScoreElement = document.querySelector(".high-score");
 const gameOverModal = document.querySelector(".game-over-modal");
 const muteBtn = document.getElementById("mute-btn");
 const volumeSlider = document.getElementById("volume-slider");
+const startScreen = document.getElementById('start-screen');
+const startBtn = document.getElementById('start-btn');
+const mainMenu = document.querySelector(".main-menu");
+const wrapper = document.querySelector(".wrapper");
+const soundOptions = document.getElementById("sound-options");
+const restartBtn = document.getElementById("restart-btn");
+const exitBtn = document.getElementById("exit-btn");
 
-document.getElementById("restart-btn").onclick = () => location.reload();
-document.getElementById("exit-btn").onclick = () => window.close();
-
+// Variables del juego
 let gameOver = false;
 let foodX, foodY;
 let snakeX = 5, snakeY = 10;
@@ -15,58 +21,56 @@ let velocityX = 0, velocityY = 0;
 let snakeBody = [];
 let setIntervalId;
 let score = 0;
-let gameSpeed = 125;
+let selectedSpeed = 125;
 let isMuted = false;
 let audioFondo = null;
 
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerHTML = `high score: ${highScore}`;
 
-// Posicionar comida en lugar aleatorio
+// Inicializar pantallas al cargar
+wrapper.style.display = "none";
+soundOptions.classList.add("hidden");
+gameOverModal.classList.add("hidden");
+startScreen.style.display = "none";
+
+// Función para posicionar comida aleatoriamente
 const changFoodPosition = () => {
   foodX = Math.floor(Math.random() * 20) + 1;
   foodY = Math.floor(Math.random() * 20) + 1;
 };
 
-// Mostrar modal de game over y detener música
+// Función para terminar el juego
 const handleGameOver = () => {
   clearInterval(setIntervalId);
   gameOverModal.classList.remove("hidden");
 
-  // Detener música al perder
   if (audioFondo && !audioFondo.paused) {
     audioFondo.pause();
     audioFondo.currentTime = 0;
   }
 };
 
-// Cambiar dirección al presionar flechas
+// Cambiar dirección con teclas
 const changeDirection = (e) => {
   if (e.key === "ArrowUp" && velocityY !== 1) {
-    velocityX = 0;
-    velocityY = -1;
+    velocityX = 0; velocityY = -1;
   } else if (e.key === "ArrowDown" && velocityY !== -1) {
-    velocityX = 0;
-    velocityY = 1;
+    velocityX = 0; velocityY = 1;
   } else if (e.key === "ArrowLeft" && velocityX !== 1) {
-    velocityX = -1;
-    velocityY = 0;
+    velocityX = -1; velocityY = 0;
   } else if (e.key === "ArrowRight" && velocityX !== -1) {
-    velocityX = 1;
-    velocityY = 0;
+    velocityX = 1; velocityY = 0;
   }
 };
-
-// Activar detección de teclas
 document.addEventListener("keydown", changeDirection);
 
-// Lógica del juego por intervalo
+// Lógica principal del juego
 const initGame = () => {
   if (gameOver) return handleGameOver();
 
   let htmlMarkup = `<div class="food" style="grid-area: ${foodY} / ${foodX}; background-image: url('assets/fruta.png');"></div>`;
 
-  // Comer comida
   if (snakeX === foodX && snakeY === foodY) {
     changFoodPosition();
     snakeBody.push([foodX, foodY]);
@@ -77,22 +81,18 @@ const initGame = () => {
     highScoreElement.innerHTML = `high score: ${highScore}`;
   }
 
-  // Mover cuerpo
   for (let i = snakeBody.length - 1; i > 0; i--) {
     snakeBody[i] = snakeBody[i - 1];
   }
 
-  // Actualizar cabeza
   snakeBody[0] = [snakeX, snakeY];
   snakeX += velocityX;
   snakeY += velocityY;
 
-  // Colisión con paredes
   if (snakeX <= 0 || snakeX > 20 || snakeY <= 0 || snakeY > 20) {
     gameOver = true;
   }
 
-  // Dibujar serpiente
   for (let i = 0; i < snakeBody.length; i++) {
     let x = snakeBody[i][0];
     let y = snakeBody[i][1];
@@ -111,7 +111,6 @@ const initGame = () => {
       transform: ${rotation};
     "></div>`;
 
-    // Colisión con sí mismo
     if (i !== 0 && snakeBody[0][1] === y && snakeBody[0][0] === x) {
       gameOver = true;
     }
@@ -120,8 +119,8 @@ const initGame = () => {
   playBoard.innerHTML = htmlMarkup;
 };
 
-// Mute / Unmute
-muteBtn.addEventListener("click", function () {
+// Mute / Unmute sonido
+muteBtn.addEventListener("click", () => {
   isMuted = !isMuted;
 
   if (audioFondo) {
@@ -138,14 +137,14 @@ muteBtn.addEventListener("click", function () {
 });
 
 // Control de volumen
-volumeSlider.addEventListener("input", function () {
+volumeSlider.addEventListener("input", () => {
   const volume = parseFloat(volumeSlider.value);
   if (audioFondo) {
     audioFondo.volume = volume;
   }
 });
 
-// Reproducir canción aleatoria de fondo
+// Reproducir música de fondo aleatoria en loop
 function reproducirCancionAleatoria() {
   const canciones = [
     './backgroundMusic/8BitFunny.mp3',
@@ -166,12 +165,23 @@ function reproducirCancionAleatoria() {
   }
 }
 
-// Iniciar el juego (desde menú)
-function startGame(speed) {
-  gameSpeed = speed;
-  document.querySelector(".main-menu").style.display = "none";
-  document.getElementById("sound-options").classList.remove("hidden");  
+// Botón para comenzar a jugar tras instrucciones
+startBtn.addEventListener('click', () => {
+  startScreen.style.display = 'none';         // Ocultar instrucciones
+  wrapper.style.display = 'flex';              // Mostrar tablero
+  soundOptions.classList.remove("hidden");    // Mostrar opciones de sonido
   reproducirCancionAleatoria();
   changFoodPosition();
-  setIntervalId = setInterval(initGame, gameSpeed);
+  setIntervalId = setInterval(initGame, selectedSpeed);
+});
+
+// Función para iniciar el juego desde menú con dificultad
+function startGame(speed) {
+  selectedSpeed = speed;
+  mainMenu.style.display = "none";   // Ocultar menú principal
+  startScreen.style.display = "flex"; // Mostrar instrucciones
 }
+
+// Botones modal game over
+restartBtn.onclick = () => location.reload();
+exitBtn.onclick = () => window.close();

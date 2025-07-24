@@ -6,6 +6,7 @@
   <title>SNAKE</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/png" href="assets/logo.png" />
+  
 </head>
 <body>
   <!-- MENÚ -->
@@ -24,13 +25,21 @@
     <div class="play-board"></div>
   </div>
 
-  
-  <!-- <audio id="bg-music" src="music.mp3" loop></audio> -->
+  <!-- Pantalla de instrucciones, oculta al principio -->
+  <div id="start-screen" class="start-screen">
+    <div class="start-content">
+      <h2>Instrucciones</h2>
+      <p>Usa las flechas del teclado para mover la serpiente.</p>
+      <button id="start-btn">¡Jugar!</button>
+    </div>
+  </div>
+
+  <!-- Opciones de sonido -->
   <div class="options-menu hidden" id="sound-options">
     <h3>🎵 Opciones de sonido</h3>
     <div class="sound-controls">
       <button id="mute-btn">🔊</button>
-      <br>
+      <br />
       <label for="volume-slider">Volumen</label>
       <input
         type="range"
@@ -42,6 +51,8 @@
       />
     </div>
   </div>
+
+  <!-- Modal de game over -->
   <div class="game-over-modal hidden">
     <div class="modal-content">
       <h2>¡Has perdido!</h2>
