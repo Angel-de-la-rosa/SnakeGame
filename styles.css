@@ -1,0 +1,191 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #1c1f2a;
+}
+button {
+    background-color: #60cbff;
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  
+  button:hover {
+    background-color: #4baed9;
+    transform: scale(1.05);
+  }
+.wrapper {
+    width: 65vmin;
+    height: 70vmin;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    border-radius: 5px;
+    background: #000;
+    border: 4px solid #60cbff;
+    box-shadow: 0 0 25px #000;
+}
+
+.game-details {
+    color: #b8c6dc;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 20px 27px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.play-board {
+    width: 100%;
+    height: 100%;
+    background: url("assets/tablero.png");
+    background-size: contain;
+    display: grid;
+    grid-template: repeat(20, 1fr) / repeat(20, 1fr);
+}
+
+.play-board .snake-part,
+.play-board .food {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    /* ¡cubre todo! */
+    background-position: center;
+}
+
+/* MODAL */
+.game-over-modal {
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.6); 
+    width: 100vw; /* para cubrir toda la pantalla */
+    height: 100vh;
+    display: flex; /* para centrar contenido */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; 
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+  
+.game-over-modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+    display: none; /* opcional */
+}
+
+.modal-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+  .modal-content h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  .modal-content p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+.hidden {
+    display: none;
+}
+
+.modal-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+/* MENÚ PRINCIPAL */
+.main-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #212837;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 5;
+}
+
+.main-menu button {
+    margin: 10px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+}
+
+.logo {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #60cbff;
+    text-shadow: 2px 2px 0 #000;
+}
+
+/* BOTÓN MUTE */
+
+.options-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #101522;
+    border-radius: 10px;
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+  }
+  
+  .options-menu .sound-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  #mute-btn {
+    padding: 10px;
+    border: none;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .hidden{
+    display: none;
+  }
+@media (max-width: 600px) {
+    .wrapper {
+      width: 90vmin;
+      height: 95vmin;
+    }
+  
+    button {
+      font-size: 1rem;
+      padding: 10px 20px;
+    }
+  }
