@@ -58,6 +58,7 @@ const handleGameOver = () => {
   }
 
   mobileControls.classList.add("hidden");
+  soundOptions.classList.add("hidden");
 };
 
 // Cambiar dirección con teclas
@@ -200,6 +201,7 @@ function startGame(speed) {
   mainMenu.style.display = "none";
   startScreen.style.display = "flex";
   mobileControls.classList.add("hidden");
+  soundOptions.classList.add("hidden"); 
 }
 
 // Botones modal game over
