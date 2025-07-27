@@ -265,7 +265,51 @@ button {
     width: 100%;
   }
 }
+@media (max-width: 768px) {
+  .options-menu {
+    top: auto;
+    bottom: 10px;
+    right: 10px;
+    width: 120px;
+    padding: 10px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    background: rgba(16, 21, 34, 0.8);
+    box-shadow: 0 0 8px #60cbff;
+    z-index: 10000;
+  }
 
+  .options-menu h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .sound-controls {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #mute-btn {
+    padding: 6px;
+    font-size: 1.2rem;
+  }
+
+  #volume-slider {
+    width: 100%;
+  }
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: transparent;
+  color: white;
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 10px 0;
+  z-index: 999;
+  pointer-events: none; /* Para que no interfiera con clics en móviles */
+}
 /* @media (max-width: 768px) {
     .wrapper {
       width: 90vmin;
